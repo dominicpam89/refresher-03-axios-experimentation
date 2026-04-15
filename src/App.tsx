@@ -1,3 +1,6 @@
+import { router } from '@/lib/router.ts';
+import { RouterProvider } from 'react-router';
+
 export default function App() {
-  return <div className="bg-violet-800 text-green-200">Test Tailwind</div>;
+  return <RouterProvider router={router} />;
 }
