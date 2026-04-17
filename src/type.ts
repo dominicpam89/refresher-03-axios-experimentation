@@ -1,3 +1,5 @@
+import type { User } from '@/types/user-type';
+
 export type ProductImageUrlType = `http${string}` | `www${string}`;
 
 export type ProductType = {
@@ -8,3 +10,5 @@ export type ProductType = {
   category: string;
   image: ProductImageUrlType;
 };
+
+export type UserType = User;
