@@ -1,5 +1,6 @@
 import LayoutBlog from '@/pages/LayoutBlog';
 import LayoutProduct from '@/pages/LayoutProduct';
+import LayoutUser from '@/pages/LayoutUsers';
 import PageBlogCreate from '@/pages/PageBlogCreate';
 import PageBlogDetail from '@/pages/PageBlogDetail';
 import PageBlogEdit from '@/pages/PageBlogEdit';
@@ -9,6 +10,7 @@ import PageProductCreate from '@/pages/PageProductCreate';
 import PageProductDetail from '@/pages/PageProductDetail';
 import PageProductEdit from '@/pages/PageProductEdit';
 import PageProducts from '@/pages/PageProducts';
+import PageUsers from '@/pages/PageUsers';
 import { createBrowserRouter } from 'react-router';
 
 export const router = createBrowserRouter([
@@ -32,5 +34,10 @@ export const router = createBrowserRouter([
       { path: ':id/edit', Component: PageProductEdit },
       { path: 'create', Component: PageProductCreate },
     ],
+  },
+  {
+    path: '/users',
+    Component: LayoutUser,
+    children: [{ index: true, Component: PageUsers }],
   },
 ]);
