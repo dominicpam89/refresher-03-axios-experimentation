@@ -1,4 +1,4 @@
-import type { User } from '@/types/user-type';
+import type { ResponseUsers, User } from '@/types/user-type';
 
 export type ProductImageUrlType = `http${string}` | `www${string}`;
 
@@ -12,3 +12,4 @@ export type ProductType = {
 };
 
 export type UserType = User;
+export type ResponseUserType = ResponseUsers;

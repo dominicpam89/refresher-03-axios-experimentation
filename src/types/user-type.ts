@@ -76,3 +76,10 @@ export type User = {
   crypto: Crypto;
   role: 'admin' | 'moderator' | 'user';
 };
+
+export type ResponseUsers = {
+  users: User[];
+  total: number;
+  skip: number;
+  limit: number;
+};
