@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface StorageItem<T> {
   key: string;
@@ -9,6 +9,7 @@ type NewVal<T> = T | ((t: T) => T);
 
 export function useLocalStorage<T>({ key, initialValue }: StorageItem<T>) {
   const [storageVal, setStorageVal] = useState<T>(() => {
+    if (typeof window === 'undefined') return initialValue;
     try {
       const item = window.localStorage.getItem(key);
       return item ? (JSON.parse(item) as T) : initialValue;
@@ -32,7 +33,7 @@ export function useLocalStorage<T>({ key, initialValue }: StorageItem<T>) {
         throw error;
       }
     },
-    [key, storageVal]
+    [key]
   );
 
   return [storageVal, setRealStorageVal] as const;
