@@ -12,3 +12,10 @@ export type Post = {
 };
 
 export type PostCreate = Pick<Post, 'title' | 'body' | 'tags'>;
+
+export type PostResponse = {
+  posts: Post[];
+  total: number;
+  skip: number;
+  limit: number;
+};

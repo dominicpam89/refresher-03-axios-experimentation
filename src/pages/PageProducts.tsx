@@ -1,5 +1,5 @@
 import { ErrorDisplay } from '@/components/ErrorDisplay';
-import { LoadingOverlay } from '@/components/Loading';
+import LoadingOverlay from '@/components/Loading';
 import { ProductCard } from '@/features/product/components/ProductCard';
 import { useGetProducts } from '@/features/product/hook';
 

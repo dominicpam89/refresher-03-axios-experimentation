@@ -1,5 +1,5 @@
 import { ErrorDisplay } from '@/components/ErrorDisplay';
-import { LoadingOverlay } from '@/components/Loading';
+import LoadingOverlay from '@/components/Loading';
 import { useGetUsers } from '@/features/user/hook';
 import UserCard from '@/features/user/components/UserCard';
 

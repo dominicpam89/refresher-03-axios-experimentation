@@ -4,7 +4,7 @@ interface LoadingOverlayProps {
   message?: string;
 }
 
-export function LoadingOverlay({ message = 'Loading...' }: LoadingOverlayProps) {
+export default function LoadingOverlay({ message = 'Loading...' }: LoadingOverlayProps) {
   return (
     <div
       className={cn(
