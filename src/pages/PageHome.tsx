@@ -1,3 +1,10 @@
+import ThemeToggle from '@/components/ThemeToggle';
+
 export default function PageHome() {
-  return <div>PageHome</div>;
+  return (
+    <div>
+      <ThemeToggle />
+      PageHome
+    </div>
+  );
 }
