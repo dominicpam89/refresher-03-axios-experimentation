@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface StorageItem<T> {
   key: string;
@@ -23,18 +23,48 @@ export function useLocalStorage<T>({ key, initialValue }: StorageItem<T>) {
     (newVal: NewVal<T>) => {
       try {
         const val = newVal instanceof Function ? newVal(storageVal) : newVal;
-        const serialized = JSON.stringify(val);
+        const serializedVal = JSON.stringify(val);
         if (typeof window !== 'undefined') {
-          window.localStorage.setItem(key, serialized);
+          window.localStorage.setItem(key, serializedVal);
         }
         setStorageVal(val);
       } catch (error) {
-        console.error('Error setting localStorage key');
-        throw error;
+        console.error(`Error setting localStorage key "${key}":`, error);
+        throw error; // komponen bisa menangani dengan try/catch atau error boundary
       }
     },
-    [key]
+    [key, storageVal]
   );
 
-  return [storageVal, setRealStorageVal] as const;
+  const removeStorageVal = useCallback(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem(key);
+      }
+      setStorageVal(initialValue);
+    } catch (error) {
+      console.error(`Error removing localStorage key "${key}":`, error);
+      throw error;
+    }
+  }, [key, initialValue]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === key && event.newValue !== null) {
+        try {
+          const newVal = JSON.parse(event.newValue);
+          setStorageVal(newVal);
+        } catch (error) {
+          console.warn(`Error parsing storage event for key "${key}":`, error);
+        }
+      } else if (event.key === key && event.newValue === null) {
+        setStorageVal(initialValue);
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [key, initialValue]);
+
+  return [storageVal, setRealStorageVal, removeStorageVal] as const;
 }
