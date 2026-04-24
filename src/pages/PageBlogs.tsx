@@ -11,7 +11,7 @@ export default function PageBlogs() {
   if (error || !data) return <ErrorDisplay errorMessage={error?.message} />;
   if (data && data.total === 0) return <div>No Post. Create one!</div>;
   return (
-    <div className="w-full">
+    <div className="w-full max-w-md m-auto">
       {data.posts.map((post) => (
         <BlogCard key={post.id} blog={post} />
       ))}

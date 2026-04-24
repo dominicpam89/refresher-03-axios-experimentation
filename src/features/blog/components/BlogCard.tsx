@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import type { PostType } from '@/type'; // your PostType definition
 import BlogTags from './BlogTags';
+import { BlogReactions } from '@/features/blog/components/BlogReactions';
 
 interface BlogCardProps {
   blog: PostType;
@@ -12,18 +13,17 @@ export function BlogCard({ blog }: BlogCardProps) {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader>
-        <CardTitle className="line-clamp-2 text-lg">{blog.title}</CardTitle>
-        <div className="flex gap-2">
-          <div>{blog.reactions.likes}</div>
-          <div>{blog.reactions.dislikes}</div>
-        </div>
+        <CardTitle className="line-clamp-2 text-lg font-black">{blog.title}</CardTitle>
+        <BlogReactions reactions={blog.reactions} />
         <CardDescription>
           <BlogTags tags={blog.tags} />
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <span>{content}...</span>
-        <Button variant="link">View More</Button>
+        <span className="font-light">{content}...</span>
+        <Button variant="link" className="cursor-pointer">
+          View More
+        </Button>
       </CardContent>
     </Card>
   );
