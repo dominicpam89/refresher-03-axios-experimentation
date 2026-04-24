@@ -11,11 +11,17 @@ export type Post = {
   userId: number;
 };
 
-export type PostCreate = Pick<Post, 'title' | 'body' | 'tags'>;
+export type PostCreate = Pick<Post, 'title' | 'body' | 'tags' | 'userId'>;
 
-export type PostResponse = {
+export type PostsResponse = {
   posts: Post[];
   total: number;
   skip: number;
   limit: number;
+};
+
+export type PostCreateResponse = {
+  id: number;
+  title: string;
+  userId: number;
 };
