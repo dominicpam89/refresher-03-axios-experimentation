@@ -3,6 +3,7 @@ import PageBlogCreate from '@/pages/PageBlogCreate';
 import PageBlogDetail from '@/pages/PageBlogDetail';
 import PageBlogEdit from '@/pages/PageBlogEdit';
 import PageBlogs from '@/pages/PageBlogs';
+import PageFormExperimentation from '@/pages/PageFormExperimentation';
 import PageHome from '@/pages/PageHome';
 import { createBrowserRouter } from 'react-router';
 
@@ -17,5 +18,9 @@ export const router = createBrowserRouter([
       { path: ':id/edit', Component: PageBlogEdit },
       { path: 'create', Component: PageBlogCreate },
     ],
+  },
+  {
+    path: '/form-experimentation',
+    Component: PageFormExperimentation,
   },
 ]);
