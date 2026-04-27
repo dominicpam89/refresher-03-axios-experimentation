@@ -1,27 +1,4 @@
-import type { ResponseUsers, User } from '@/types/user-type';
-import type { Post, PostCreate, PostCreateResponse, PostsResponse } from '@/types/blog-type';
 import type { Theme, ThemeContext, ThemeContextProviderProps as TC } from '@/types/context-type';
-
-export type ProductImageUrlType = `http${string}` | `www${string}`;
-
-export type ProductType = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: ProductImageUrlType;
-};
-
-// User Type
-export type UserType = User;
-export type ResponseUserType = ResponseUsers;
-
-// Post Type
-export type PostType = Post;
-export type PostsResponseType = PostsResponse;
-export type PostCreateType = PostCreate;
-export type PostCreateResponseType = PostCreateResponse;
 
 // Theme Type
 export type ThemeType = Theme;
