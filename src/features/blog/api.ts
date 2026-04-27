@@ -1,6 +1,12 @@
-import axios from 'axios';
+import axios, { type AxiosResponse } from 'axios';
+import type { BlogType } from '@/types/blog-type';
 
-export const apiBlog = axios.create({
+const apiBlog = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com',
   timeout: 10000,
 });
+
+export const fetchBlogs = async () => {
+  const { data }: AxiosResponse<BlogType[]> = await apiBlog.get('/posts');
+  return data;
+};
