@@ -4,3 +4,5 @@ export type BlogType = {
   title: string;
   body: string;
 };
+
+export type NewBlogType = Omit<BlogType, 'userId' | 'id'>;
