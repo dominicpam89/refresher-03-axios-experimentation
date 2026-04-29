@@ -9,16 +9,13 @@ export type AuthLoginFormType = {
 };
 
 export type AuthRegisterFormType = {
+  email: string;
   username: AuthLoginFormType['username'];
   password: AuthLoginFormType['password'];
   name: {
     firstName: string;
+    middleName: string;
     lastName: string;
   };
-  phoneNumber: number[];
-  address: {
-    line1: string;
-    line2: string;
-    zipCode: ZipCodeType;
-  };
+  phoneNumber: string[];
 };

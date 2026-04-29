@@ -22,6 +22,9 @@ export default function AuthRegisterForm() {
           <InputText
             inputProps={{ id: 'email', label: 'Email', placeholder: 'Your Email', type: 'email' }}
           />
+          <InputText
+            inputProps={{ id: 'username', label: 'Username', placeholder: 'Your Username' }}
+          />
           <InputPassword inputProps={{ label: 'Password', placeholder: 'Your Password' }} />
         </FieldGroup>
       </FieldSet>
@@ -43,10 +46,8 @@ export default function AuthRegisterForm() {
             inputProps={{ id: 'lastName', label: 'Last Name', placeholder: 'Example: Doe' }}
           />
         </FieldGroup>
+        <InputPhoneNumber />
         <FieldSeparator />
-        <FieldGroup>
-          <InputPhoneNumber />
-        </FieldGroup>
       </FieldSet>
     </form>
   );
