@@ -1,6 +1,7 @@
 import AuthLoginForm from '@/features/auth/components/AuthLoginForm';
 import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'react-router';
+import AuthRegisterForm from '@/features/auth/components/AuthRegisterForm';
 
 const tabs = {
   login: 'auth-login-form',
@@ -25,7 +26,7 @@ export default function PageFormExperimentation() {
   };
 
   return (
-    <div className="flex flex-col gap-2 max-w-sm mx-auto pt-12">
+    <div className="flex flex-col gap-6 max-w-sm mx-auto pt-12">
       <div aria-label="tabs" className="flex gap-1">
         <Button variant={variant('auth-login-form')} onClick={onAuthLoginForm}>
           Auth Login Form
@@ -35,6 +36,7 @@ export default function PageFormExperimentation() {
         </Button>
       </div>
       {tab === tabs.login && <AuthLoginForm />}
+      {tab === tabs.register && <AuthRegisterForm />}
     </div>
   );
 }
