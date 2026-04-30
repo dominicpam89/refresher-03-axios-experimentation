@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
+import { type UseControllerProps, type FieldValues, useController } from 'react-hook-form';
 
 type InputProps = {
   id: string;
@@ -9,13 +10,16 @@ type InputProps = {
   autoComplete?: boolean;
 };
 
-interface Props {
+interface Props<T extends FieldValues> {
   inputProps: InputProps;
+  hookProps: UseControllerProps<T>;
 }
 
-export default function InputText({
+export default function InputText<T extends FieldValues>({
   inputProps: { id, label, type = 'text', placeholder = '', autoComplete = false },
-}: Props) {
+  hookProps,
+}: Props<T>) {
+  const { field, fieldState } = useController<T>(hookProps);
   return (
     <Field>
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
@@ -24,8 +28,9 @@ export default function InputText({
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete ? 'on' : 'off'}
+        {...field}
       />
-      <FieldError>Email is required</FieldError>
+      {fieldState.error && <FieldError>{fieldState.error.message}</FieldError>}
     </Field>
   );
 }

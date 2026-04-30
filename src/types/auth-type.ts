@@ -17,5 +17,5 @@ export type AuthRegisterFormType = {
     middleName: string;
     lastName: string;
   };
-  phoneNumber: string[];
+  phoneNumber: { id: number; countryCode: string; number: string }[];
 };
