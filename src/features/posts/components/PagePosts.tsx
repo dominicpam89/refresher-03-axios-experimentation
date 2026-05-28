@@ -1,11 +1,9 @@
 import PostOverview from './PostOverview';
 import type { Post } from '@/features/posts/types/post.type';
+import { Route } from '@/routes/posts';
 
-interface Props {
-  posts: Array<Post>;
-}
-
-export default function PagePosts({ posts }: Props) {
+export default function PagePosts() {
+  const { posts }: { posts: Array<Post> } = Route.useLoaderData();
   return (
     <section id="page-posts">
       <h1>Posts Page</h1>
