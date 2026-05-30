@@ -9,7 +9,7 @@ export default function RootLayout() {
           <Link to="/">Home</Link>
           <Link to="/posts">Posts</Link>
         </nav>
-        <main>
+        <main className="max-w-lg mx-auto" p-8>
           <Outlet />
         </main>
         <TanStackRouterDevtools />
