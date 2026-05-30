@@ -11,9 +11,10 @@ import { Link } from '@tanstack/react-router';
 
 interface Props {
   post: Post;
+  currentPage: number;
 }
 
-export default function PostOverview({ post }: Props) {
+export default function PostOverview({ post, currentPage }: Props) {
   return (
     <Card>
       <CardHeader>
@@ -27,7 +28,13 @@ export default function PostOverview({ post }: Props) {
       <CardContent>
         {post.body.substring(0, 100)}...
         <Button asChild variant="link">
-          <Link to={`/posts/${post.id}`}>Read More</Link>
+          <Link
+            to="/posts/$id"
+            params={{ id: post.id.toString() }}
+            search={{ page: currentPage }}
+          >
+            Read More
+          </Link>
         </Button>
       </CardContent>
     </Card>
