@@ -1,4 +1,5 @@
 import { Outlet, Link } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 export default function ShadcnTest() {
   return (
@@ -12,6 +13,7 @@ export default function ShadcnTest() {
       <main className="mx-auto max-w-lg min-w-xs">
         <Outlet />
       </main>
+      <TanStackRouterDevtools />
     </>
   );
 }
