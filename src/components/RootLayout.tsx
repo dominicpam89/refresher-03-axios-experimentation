@@ -10,7 +10,7 @@ export default function RootLayout() {
           <Link to="/contact">Contact</Link>
         </nav>
       </header>
-      <main>
+      <main className="max-w-lg min-w-xs mx-auto p-4 lg:p-8">
         <Outlet />
       </main>
       <TanStackRouterDevtools />
