@@ -1,30 +1,51 @@
 import { delay } from '@/lib/utils';
 import { z } from 'zod';
 
-export const loginSchema = z
+const username = z.string().min(3, 'minimum 3 characters');
+const password = z
+  .string()
+  .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{5,}$/);
+const passwordConfirmation = z.string();
+
+const loginSchema = z
   .object({
-    username: z.string().min(3, 'minimum 3 characters'),
-    password: z
-      .string()
-      .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{5,}$/),
-    passwordConfirmation: z.string(),
+    username,
+    password,
+    passwordConfirmation,
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     path: ['passwordConfirmation'],
     message: "Password doesn't match",
   });
 
-export type LoginSchema = z.infer<typeof loginSchema>;
+type LoginSchema = z.infer<typeof loginSchema>;
 
-export const defaultValues: LoginSchema = {
+const defaultValues: LoginSchema = {
   username: '',
   password: '',
   passwordConfirmation: '',
 };
 
-export const mockExistingUsernames = ['admin', 'test', 'user'];
+const mockExistingUsernames: Array<LoginSchema['username']> = [
+  'admin',
+  'test',
+  'user',
+];
 
-export const isUsernameExist = async (username: LoginSchema['username']) => {
+const isUsernameExist = async (username: LoginSchema['username']) => {
   await delay(1200);
   return mockExistingUsernames.includes(username.toLowerCase());
+};
+
+/** Export */
+export const sch = {
+  schema: {
+    username,
+    password,
+    passwordConfirmation,
+    loginSchema,
+    defaultValues,
+  },
+  mockExistingUsernames,
+  isUsernameExist,
 };
