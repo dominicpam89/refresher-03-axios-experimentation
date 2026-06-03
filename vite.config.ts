@@ -12,8 +12,8 @@ export default defineConfig({
       autoCodeSplitting: true,
       target: 'react',
     }),
-    react(),
     tailwindcss(),
+    react(),
     babel({ presets: [reactCompilerPreset()] }),
   ],
   resolve: {
