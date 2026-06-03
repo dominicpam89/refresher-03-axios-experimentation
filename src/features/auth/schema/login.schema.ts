@@ -1,3 +1,4 @@
+import { delay } from '@/lib/utils';
 import { z } from 'zod';
 
 export const loginSchema = z
@@ -14,3 +15,10 @@ export const loginSchema = z
   });
 
 export type LoginSchema = z.infer<typeof loginSchema>;
+
+export const mockExistingUsernames = ['admin', 'test', 'user'];
+
+export const isUsernameExist = async (username: LoginSchema['username']) => {
+  await delay(1200);
+  return mockExistingUsernames.includes(username.toLowerCase());
+};
