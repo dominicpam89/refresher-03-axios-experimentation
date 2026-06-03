@@ -5,7 +5,7 @@ export default function RootLayout() {
   return (
     <>
       <header>
-        <nav>
+        <nav className="hidden md:w-full md:p-4 md:flex md:gap-4">
           <Link to="/">Home</Link>
           <Link to="/register">Register</Link>
           <Link to="/login">Login</Link>
