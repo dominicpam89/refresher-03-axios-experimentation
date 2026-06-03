@@ -16,6 +16,12 @@ export const loginSchema = z
 
 export type LoginSchema = z.infer<typeof loginSchema>;
 
+export const defaultValues: LoginSchema = {
+  username: '',
+  password: '',
+  passwordConfirmation: '',
+};
+
 export const mockExistingUsernames = ['admin', 'test', 'user'];
 
 export const isUsernameExist = async (username: LoginSchema['username']) => {
