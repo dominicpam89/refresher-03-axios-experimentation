@@ -7,26 +7,33 @@ import {
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { twClass } from '@/features/contact/utils/form.style';
+import { useFieldContext } from '@/features/contact/context/form.context';
+import { type ContactFormSchema } from '@/features/contact/types/form.type';
+import type { HTMLInputTypeAttribute } from 'react';
 
 interface Props {
   id: string;
-  type: HTMLInputElement['type'];
+  type: HTMLInputTypeAttribute;
   placeholder: string;
   label?: string;
   description?: string;
 }
 
-export default function FieldText({
-  id,
-  type,
-  label,
-  placeholder,
-  description,
-}: Props) {
+export default function FieldText<
+  T extends ContactFormSchema[keyof ContactFormSchema],
+>({ id, type, label, placeholder, description }: Props) {
+  const field = useFieldContext<T>();
   return (
     <Field className={cn(twClass.field)}>
-      {label && <FieldLabel htmlFor={id}>Email</FieldLabel>}
-      <Input id={id} type={type} placeholder={placeholder} />
+      {label && <FieldLabel htmlFor={id}>{id}</FieldLabel>}
+      <Input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value as T)}
+        onBlur={() => field.handleBlur()}
+      />
       {description && (
         <FieldDescription>
           {description.length > 0
@@ -35,7 +42,7 @@ export default function FieldText({
           obcaecati eos tenetur sequi soluta necessitatibus.`}
         </FieldDescription>
       )}
-      <FieldError>Some Errors</FieldError>
+      <FieldError errors={field.state.meta.errors} />
     </Field>
   );
 }

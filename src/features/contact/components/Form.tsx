@@ -1,33 +1,59 @@
 import {
   contactFormSchema,
   defaultValues,
+  type ContactFormSchema,
 } from '@/features/contact/types/form.type';
-import { useForm } from '@tanstack/react-form';
+import { createFormHook } from '@tanstack/react-form';
 import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-  FieldSeparator,
-} from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+  fieldContext,
+  formContext,
+} from '@/features/contact/context/form.context';
+import { FieldSeparator } from '@/components/ui/field';
+import FieldText from './form/FieldText';
+import FieldTextArea from './form/FieldTextArea';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { twClass } from '@/features/contact/utils/form.style';
+import { useLoaderData, useNavigate } from '@tanstack/react-router';
+
+const { useAppForm } = createFormHook({
+  fieldContext,
+  formContext,
+  fieldComponents: {
+    FieldText,
+    FieldTextArea,
+  },
+  formComponents: {},
+});
 
 export default function Form() {
-  const form = useForm({
+  const { axios } = useLoaderData({ from: '/contact' });
+  const navigate = useNavigate();
+  const form = useAppForm({
     defaultValues,
-    onSubmit: (data) => {
-      console.log(data.value);
+    onSubmit: async ({ value }) => {
+      try {
+        await axios.post('/posts', {
+          title: value.email,
+          body: value.message,
+          userId: 1, // for simulation, placeholder data
+        });
+        alert('Form submitted successfully!');
+        navigate({
+          to: '/thankyou',
+          replace: false,
+        });
+      } catch (error) {
+        console.error(`Couldn't submit form, error: ${error}`);
+        alert('Please try again.');
+      }
     },
     validators: {
       onSubmit: contactFormSchema,
-      onBlur: contactFormSchema,
-      onChange: contactFormSchema,
     },
   });
+  const emailValidator = contactFormSchema.shape.email;
+  const messageValidator = contactFormSchema.shape.message;
   return (
     <form
       className={cn(twClass.form)}
@@ -44,38 +70,63 @@ export default function Form() {
         aliquam, quis praesentium recusandae reiciendis totam repudiandae velit
         ab autem, voluptatibus dolores!
       </p>
-      <Field className={cn(twClass.field)}>
-        <FieldLabel htmlFor="email">Email</FieldLabel>
-        <Input id="email" type="email" />
-        <FieldDescription>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-          obcaecati eos tenetur sequi soluta necessitatibus.
-        </FieldDescription>
-        <FieldError>Some Errors</FieldError>
-      </Field>
-      <Field className={cn(twClass.field)}>
-        <FieldLabel htmlFor="user-text">Text</FieldLabel>
-        <Textarea id="user-text" rows={5} />
-        <FieldDescription>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus
-          obcaecati eos tenetur sequi soluta necessitatibus.
-        </FieldDescription>
-        <FieldError>Some Errors</FieldError>
-      </Field>
+      <form.AppField
+        name="email"
+        validators={{
+          onBlur: emailValidator,
+          onChange: emailValidator,
+        }}
+        children={(field) => (
+          <field.FieldText<ContactFormSchema['email']>
+            id="Email"
+            placeholder="Example: johndoe@example.com"
+            type="email"
+            description=""
+            label="Your Email"
+          />
+        )}
+      />
+      <form.AppField
+        name="message"
+        validators={{
+          onBlur: messageValidator,
+          onChange: messageValidator,
+        }}
+        children={(field) => (
+          <field.FieldTextArea<ContactFormSchema['message']>
+            id="Message"
+            placeholder="Your Message"
+            label="Message"
+            description=""
+          />
+        )}
+      />
       <FieldSeparator />
-      <div className={cn(twClass.btnContainer)}>
-        <Button
-          type="button"
-          className={cn(twClass.btn)}
-          variant="outline"
-          onClick={() => form.reset()}
-        >
-          Reset Field
-        </Button>
-        <Button type="submit" className={cn(twClass.btn)}>
-          Send
-        </Button>
-      </div>
+      <form.Subscribe
+        selector={(state) => [state.canSubmit, state.isSubmitting]}
+        children={([canSubmit, isSubmitting]) => (
+          <div className={cn(twClass.btnContainer)}>
+            <Button
+              type="button"
+              className={cn(twClass.btn)}
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                form.reset();
+              }}
+            >
+              Reset Field
+            </Button>
+            <Button
+              type="submit"
+              className={cn(twClass.btn)}
+              disabled={!canSubmit || isSubmitting}
+            >
+              Send
+            </Button>
+          </div>
+        )}
+      />
     </form>
   );
 }

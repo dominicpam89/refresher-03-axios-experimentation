@@ -7,6 +7,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { twClass } from '@/features/contact/utils/form.style';
+import { useFieldContext } from '@/features/contact/context/form.context';
+import { type ContactFormSchema } from '@/features/contact/types/form.type';
 
 interface Props {
   id: string;
@@ -15,16 +17,21 @@ interface Props {
   description?: string;
 }
 
-export default function FieldTextArea({
-  id,
-  label,
-  placeholder,
-  description,
-}: Props) {
+export default function FieldTextArea<
+  T extends ContactFormSchema[keyof ContactFormSchema],
+>({ id, label, placeholder, description }: Props) {
+  const field = useFieldContext<T>();
   return (
     <Field className={cn(twClass.field)}>
-      {label && <FieldLabel htmlFor={id}>Email</FieldLabel>}
-      <Textarea id={id} placeholder={placeholder} rows={5} />
+      {label && <FieldLabel htmlFor={id}>{id}</FieldLabel>}
+      <Textarea
+        id={id}
+        placeholder={placeholder}
+        rows={5}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value as T)}
+        onBlur={() => field.handleBlur()}
+      />
       {description && (
         <FieldDescription>
           {description.length > 0
@@ -33,7 +40,7 @@ export default function FieldTextArea({
           obcaecati eos tenetur sequi soluta necessitatibus.`}
         </FieldDescription>
       )}
-      <FieldError>Some Errors</FieldError>
+      <FieldError errors={field.state.meta.errors} />
     </Field>
   );
 }
