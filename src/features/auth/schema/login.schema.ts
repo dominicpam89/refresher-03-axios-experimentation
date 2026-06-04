@@ -4,7 +4,10 @@ import { z } from 'zod';
 const username = z.string().min(3, 'minimum 3 characters');
 const password = z
   .string()
-  .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{5,}$/);
+  .regex(
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{5,}$/,
+    'minimum 6 characters, at least one lowercase, one uppercase, and one symbol'
+  );
 const passwordConfirmation = z.string();
 
 const loginSchema = z
