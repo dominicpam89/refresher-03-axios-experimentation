@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { fieldContext, formContext } from '@/context/form.context';
 import { createFormHook } from '@tanstack/react-form';
 import { sch } from '@/features/auth/schema/auth.schema';
+import { useLoaderData, useNavigate } from '@tanstack/react-router';
 
 const {
   schema: {
@@ -22,14 +23,26 @@ const { useAppForm } = createFormHook({
 });
 
 export default function FormLogin() {
+  const { axios } = useLoaderData({ from: '/register' });
+  const navigate = useNavigate();
   const form = useAppForm({
     defaultValues: login,
     validators: {
       onSubmit: loginSchema,
       onChange: loginSchema,
     },
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      try {
+        const response = await axios.post('/auth/login', {
+          username: value.username,
+          password: value.password,
+        });
+        localStorage.setItem('token', response.data.token);
+        navigate({ to: '/dashboard', replace: true });
+      } catch (error) {
+        console.error('login error', error);
+        alert('Failed to login');
+      }
     },
   });
   const { btn, btnGroup, form: formStyle } = twClasses;

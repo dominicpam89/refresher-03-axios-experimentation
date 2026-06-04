@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { createFormHook } from '@tanstack/react-form';
 import { fieldContext, formContext } from '@/context/form.context';
 import { sch } from '@/features/auth/schema/auth.schema';
+import { useLoaderData, useNavigate } from '@tanstack/react-router';
 
 const { useAppForm } = createFormHook({
   fieldContext,
@@ -27,14 +28,26 @@ const {
 } = schema;
 
 export default function FormRegister() {
+  const { axios } = useLoaderData({ from: '/register' });
+  const navigate = useNavigate();
   const form = useAppForm({
     defaultValues: register,
     validators: {
       onSubmit: registerSchema,
       onChange: registerSchema,
     },
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      try {
+        const response = await axios.post('/auth/register', {
+          username: value.username,
+          password: value.password,
+        });
+        localStorage.setItem('token', response.data.token);
+        navigate({ to: '/dashboard', replace: true });
+      } catch (error) {
+        console.error('register error', error);
+        alert('Failed to register');
+      }
     },
   });
   return (
