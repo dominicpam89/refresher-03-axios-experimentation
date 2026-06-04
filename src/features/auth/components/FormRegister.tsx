@@ -19,12 +19,16 @@ const { useAppForm } = createFormHook({
 
 const { schema, isUsernameExist } = sch;
 const { btn, btnGroup, form: formStyle } = twClasses;
-const { defaultValues, password, passwordConfirmation, registerSchema } =
-  schema;
+const {
+  defaultValues: { register },
+  password,
+  passwordConfirmation,
+  registerSchema,
+} = schema;
 
 export default function FormRegister() {
   const form = useAppForm({
-    defaultValues,
+    defaultValues: register,
     validators: {
       onSubmit: registerSchema,
       onChange: registerSchema,

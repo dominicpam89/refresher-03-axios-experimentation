@@ -23,10 +23,16 @@ const registerSchema = z
 
 type RegisterSchema = z.infer<typeof registerSchema>;
 
-const defaultValues: RegisterSchema = {
-  username: '',
-  password: '',
-  passwordConfirmation: '',
+const loginSchema = z.object({
+  username,
+  password: z.string(),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
+
+const defaultValues: { register: RegisterSchema; login: LoginSchema } = {
+  register: { username: '', password: '', passwordConfirmation: '' },
+  login: { username: '', password: '' },
 };
 
 const mockExistingUsernames: Array<RegisterSchema['username']> = [
@@ -35,7 +41,9 @@ const mockExistingUsernames: Array<RegisterSchema['username']> = [
   'user',
 ];
 
-const isUsernameExist = async (username: RegisterSchema['username']) => {
+const isUsernameExist = async (
+  username: RegisterSchema['username'] | LoginSchema['username']
+) => {
   await delay(800);
   return mockExistingUsernames.includes(username.toLowerCase());
 };
@@ -47,8 +55,11 @@ export const sch = {
     password,
     passwordConfirmation,
     registerSchema,
+    loginSchema,
     defaultValues,
   },
   mockExistingUsernames,
   isUsernameExist,
 };
+
+export type { LoginSchema, RegisterSchema };
