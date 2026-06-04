@@ -33,7 +33,7 @@ const mockExistingUsernames: Array<LoginSchema['username']> = [
 ];
 
 const isUsernameExist = async (username: LoginSchema['username']) => {
-  await delay(1200);
+  await delay(800);
   return mockExistingUsernames.includes(username.toLowerCase());
 };
 

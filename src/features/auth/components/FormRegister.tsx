@@ -1,4 +1,4 @@
-import FieldText from '@/components/FieldText';
+import FieldUsername from '@/components/FieldUsername';
 import FieldPassword from '@/components/FieldPassword';
 import { Button } from '@/components/ui/button';
 import { twClasses } from '@/features/auth/utils/form.style';
@@ -11,29 +11,54 @@ const { useAppForm } = createFormHook({
   fieldContext,
   formContext,
   fieldComponents: {
-    FieldText,
+    FieldUsername,
     FieldPassword,
   },
   formComponents: {},
 });
 
-const { schema, isUsernameExist, mockExistingUsernames } = sch;
+const { schema, isUsernameExist } = sch;
 const { btn, btnGroup, form: formStyle } = twClasses;
-const { defaultValues } = schema;
+const { defaultValues, password, passwordConfirmation, loginSchema } = schema;
 
 export default function FormRegister() {
   const form = useAppForm({
     defaultValues,
+    validators: {
+      onSubmit: loginSchema,
+      onChange: loginSchema,
+    },
+    onSubmit: ({ value }) => {
+      console.log(value);
+    },
   });
   return (
-    <form className={cn(formStyle)}>
+    <form
+      className={cn(formStyle)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+    >
       <h2>Form Register</h2>
       <form.AppField
         name="username"
-        children={(field) => <field.FieldText id="username" label="Username" />}
+        validators={{
+          onChangeAsync: async ({ value }) => {
+            const taken = await isUsernameExist(value);
+            if (taken) return { message: 'username is taken' };
+            return undefined;
+          },
+          onChangeAsyncDebounceMs: 300,
+        }}
+        children={(field) => (
+          <field.FieldUsername id="username" label="Username" />
+        )}
       />
       <form.AppField
         name="password"
+        validators={{ onBlur: password, onChange: password }}
         children={(field) => (
           <field.FieldPassword
             id="password"
@@ -44,6 +69,10 @@ export default function FormRegister() {
       />
       <form.AppField
         name="passwordConfirmation"
+        validators={{
+          onBlur: passwordConfirmation,
+          onChange: passwordConfirmation,
+        }}
         children={(field) => (
           <field.FieldPassword
             id="password-confirmation"
