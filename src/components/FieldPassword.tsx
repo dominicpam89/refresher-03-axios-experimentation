@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { EyeOffIcon, EyeIcon } from 'lucide-react';
 import { Button } from './ui/button';
+import { useFieldContext } from '@/context/form.context';
 
 interface Props {
   label?: string;
@@ -22,6 +23,7 @@ export default function FieldPassword({
   description,
   defaultShow = false,
 }: Props) {
+  const { state, handleChange, handleBlur } = useFieldContext<string>();
   const [showPass, setShowPass] = useState<boolean>(defaultShow);
   const toggleShowPass = () => {
     setShowPass((val) => !val);
@@ -30,7 +32,13 @@ export default function FieldPassword({
     <Field>
       {label && <FieldLabel htmlFor={id}>{label}</FieldLabel>}
       <div id="input-group" className="relative w-full">
-        <Input id={id} type={showPass ? 'text' : 'password'} />
+        <Input
+          id={id}
+          type={showPass ? 'text' : 'password'}
+          value={state.value}
+          onChange={(e) => handleChange(e.target.value)}
+          onBlur={handleBlur}
+        />
         <Button
           type="button"
           size="icon"
@@ -49,7 +57,7 @@ export default function FieldPassword({
       adipisci.`}
       </FieldDescription>
       {/* leave it for now */}
-      <FieldError errors={[]} />
+      <FieldError errors={state.meta.errors} />
     </Field>
   );
 }

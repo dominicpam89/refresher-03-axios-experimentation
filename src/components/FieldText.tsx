@@ -5,6 +5,7 @@ import {
   FieldError,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { useFieldContext } from '@/context/form.context';
 
 interface Props {
   label?: string;
@@ -13,10 +14,17 @@ interface Props {
 }
 
 export default function FieldText({ label, id, description }: Props) {
+  const { state, handleChange, handleBlur } = useFieldContext<string>();
   return (
     <Field>
       {label && <FieldLabel htmlFor={id}>{label}</FieldLabel>}
-      <Input id={id} type="text" />
+      <Input
+        id={id}
+        type="text"
+        value={state.value}
+        onChange={(e) => handleChange(e.target.value)}
+        onBlur={() => handleBlur()}
+      />
       <FieldDescription>
         {description ??
           `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis,
@@ -25,7 +33,7 @@ export default function FieldText({ label, id, description }: Props) {
       adipisci.`}
       </FieldDescription>
       {/* leave it for now */}
-      <FieldError errors={[]} />
+      <FieldError errors={state.meta.errors} />
     </Field>
   );
 }
