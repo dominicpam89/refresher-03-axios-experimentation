@@ -10,7 +10,7 @@ const password = z
   );
 const passwordConfirmation = z.string();
 
-const loginSchema = z
+const registerSchema = z
   .object({
     username,
     password,
@@ -21,21 +21,21 @@ const loginSchema = z
     message: "Password doesn't match",
   });
 
-type LoginSchema = z.infer<typeof loginSchema>;
+type RegisterSchema = z.infer<typeof registerSchema>;
 
-const defaultValues: LoginSchema = {
+const defaultValues: RegisterSchema = {
   username: '',
   password: '',
   passwordConfirmation: '',
 };
 
-const mockExistingUsernames: Array<LoginSchema['username']> = [
+const mockExistingUsernames: Array<RegisterSchema['username']> = [
   'admin',
   'test',
   'user',
 ];
 
-const isUsernameExist = async (username: LoginSchema['username']) => {
+const isUsernameExist = async (username: RegisterSchema['username']) => {
   await delay(800);
   return mockExistingUsernames.includes(username.toLowerCase());
 };
@@ -46,7 +46,7 @@ export const sch = {
     username,
     password,
     passwordConfirmation,
-    loginSchema,
+    registerSchema,
     defaultValues,
   },
   mockExistingUsernames,

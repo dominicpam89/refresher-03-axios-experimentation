@@ -5,7 +5,7 @@ import { twClasses } from '@/features/auth/utils/form.style';
 import { cn } from '@/lib/utils';
 import { createFormHook } from '@tanstack/react-form';
 import { fieldContext, formContext } from '@/context/form.context';
-import { sch } from '@/features/auth/schema/login.schema';
+import { sch } from '@/features/auth/schema/auth.schema';
 
 const { useAppForm } = createFormHook({
   fieldContext,
@@ -19,14 +19,15 @@ const { useAppForm } = createFormHook({
 
 const { schema, isUsernameExist } = sch;
 const { btn, btnGroup, form: formStyle } = twClasses;
-const { defaultValues, password, passwordConfirmation, loginSchema } = schema;
+const { defaultValues, password, passwordConfirmation, registerSchema } =
+  schema;
 
 export default function FormRegister() {
   const form = useAppForm({
     defaultValues,
     validators: {
-      onSubmit: loginSchema,
-      onChange: loginSchema,
+      onSubmit: registerSchema,
+      onChange: registerSchema,
     },
     onSubmit: ({ value }) => {
       console.log(value);
