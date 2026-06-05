@@ -16,7 +16,7 @@ export default function RootLayout() {
           </Link>
         </nav>
       </header>
-      <main>
+      <main className="mx-auto mt-8 max-w-lg min-w-xs" p-4 lg:p-8>
         <Outlet />
       </main>
       <TanStackRouterDevtools />
