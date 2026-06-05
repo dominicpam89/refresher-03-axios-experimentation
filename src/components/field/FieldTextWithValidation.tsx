@@ -5,52 +5,45 @@ import {
   FieldError,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { EyeOffIcon, EyeIcon } from 'lucide-react';
+import type { HTMLInputTypeAttribute } from 'react';
 import { useFieldContext } from '@/context/form.context';
 
 interface Props {
   label?: string;
   id: string;
+  type?: HTMLInputTypeAttribute;
   placeholder: string;
   description?: string;
-  defaultShowPass?: boolean;
+  validationText?: string;
 }
 
-export default function FieldText({
+export default function FieldTextWithValidation({
   label,
   id,
+  type = 'text',
   placeholder,
   description,
-  defaultShowPass = false,
+  validationText,
 }: Props) {
   const field = useFieldContext<string>();
-  const [showPass, setShowPass] = useState<boolean>(defaultShowPass);
-  const toggleShowPass = () => {
-    setShowPass((val) => !val);
-  };
   return (
     <Field className="w-full flex flex-col gap-2 justify-center">
       {label && <FieldLabel htmlFor={id}>{label}</FieldLabel>}
-      <div id="input-group" className="relative w-full">
+      <div id="input-group" className="w-full relative">
         <Input
+          className="w-full"
           id={id}
-          type={showPass ? 'text' : 'password'}
+          type={type}
           placeholder={placeholder}
           value={field.state.value}
           onChange={(e) => field.handleChange(e.target.value)}
           onBlur={field.handleBlur}
         />
-        <Button
-          size="icon"
-          type="button"
-          variant="ghost"
-          onClick={toggleShowPass}
-          className="absolute top-0 right-2"
-        >
-          {showPass ? <EyeOffIcon /> : <EyeIcon />}
-        </Button>
+        {field.state.meta.isValidating && (
+          <p className="paragraph-compact top-2 right-2 absolute">
+            {validationText || 'checking...'}
+          </p>
+        )}
       </div>
       <FieldDescription className="paragraph-compact">
         {description ||

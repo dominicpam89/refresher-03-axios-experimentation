@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import type { HTMLInputTypeAttribute } from 'react';
+import { useFieldContext } from '@/context/form.context';
 
 interface Props {
   label?: string;
@@ -22,15 +23,23 @@ export default function FieldText({
   placeholder,
   description,
 }: Props) {
+  const field = useFieldContext<string>();
   return (
     <Field className="w-full flex flex-col gap-2 justify-center">
       {label && <FieldLabel htmlFor={id}>{label}</FieldLabel>}
-      <Input id={id} type={type} placeholder={placeholder} />
-      <FieldDescription>
+      <Input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+      />
+      <FieldDescription className="paragraph-compact">
         {description ||
           `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam aliquid blanditiis maiores aut natus mollitia quis, et suscipit consectetur cupiditate dolorum? Culpa rem non, odio corporis quae voluptates dolorum ipsum.`}
       </FieldDescription>
-      <FieldError>Set later on</FieldError>
+      <FieldError errors={field.state.meta.errors} />
     </Field>
   );
 }
