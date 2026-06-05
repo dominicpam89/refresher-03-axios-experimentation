@@ -12,7 +12,9 @@ api.interceptors.request.use((config) => {
 });
 
 type NavigateFn = (url: string) => void;
+
 let navigateFn: NavigateFn | undefined = undefined;
+
 export const setNavigateForInterceptor = (fn: (url: string) => void) => {
   navigateFn = fn;
 };
@@ -27,3 +29,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export type API = typeof api;
