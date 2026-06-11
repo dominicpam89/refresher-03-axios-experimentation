@@ -20,9 +20,9 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
   });
 
   const login = useCallback(
-    async ({ email, password }: { email: string; password: string }) => {
+    async ({ username, password }: { username: string; password: string }) => {
       try {
-        const { token: newToken } = await mockLogin({ email, password });
+        const { token: newToken } = await mockLogin({ username, password });
         if (typeof window !== 'undefined') {
           return localStorage.setItem('token', newToken);
         }

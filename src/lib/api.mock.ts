@@ -1,5 +1,5 @@
 type LoginParam = {
-  email: string;
+  username: string;
   password: string;
   mockTime?: number;
 };
@@ -11,10 +11,10 @@ type ProtectedDataParam = {
 type LoginPromise = { token: string };
 type ProtectedDataPromise = { data: string };
 
-const mockLogin = ({ email, password, mockTime = 500 }: LoginParam) => {
+const mockLogin = ({ username, password, mockTime = 500 }: LoginParam) => {
   return new Promise<LoginPromise>((resolve, reject) => {
     setTimeout(() => {
-      if (email === 'user@example.com' && password === 'pass')
+      if (username === 'johndoe' && password === 'pass')
         resolve({ token: 'fake-jwt' });
       else {
         reject({

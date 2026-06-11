@@ -1,5 +1,5 @@
 type LoginParam = {
-  email: string;
+  username: string;
   password: string;
 };
 

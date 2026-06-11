@@ -10,6 +10,8 @@ import {
   defaultValues,
 } from '@/features/auth/schema/login.schema';
 import { isUsernameExist } from '@/features/auth/api/mock.api';
+import { useAuth } from '@/context/auth.context';
+import { useNavigate } from '@tanstack/react-router';
 
 const { useAppForm } = createFormHook({
   fieldContext,
@@ -22,13 +24,23 @@ const { useAppForm } = createFormHook({
 });
 
 export default function FormLogin() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const form = useAppForm({
     defaultValues,
     validators: {
       onSubmit: loginSchema,
     },
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      const { username, password } = value;
+      try {
+        await login({ username, password });
+        navigate({
+          to: '/dashboard',
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
   return (
